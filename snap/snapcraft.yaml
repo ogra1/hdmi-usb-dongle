@@ -16,6 +16,11 @@ grade: stable
 confinement: strict
 compression: lzo
 
+architectures:
+  - build-on: amd64
+  - build-on: armhf
+  - build-on: arm64
+
 apps:
   hdmi-usb-dongle:
     extensions: [gnome-3-38]
@@ -26,7 +31,7 @@ apps:
       - desktop
       - wayland
       - x11
-      
+
 parts:
   mplayer:
     plugin: dump
