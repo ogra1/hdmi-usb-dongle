@@ -1,0 +1,52 @@
+name: hdmi-usb-dongle
+base: core20
+version: '0.1'
+summary: Seamlessly show captured video from a HDMI to USB dongle
+description: |
+  This snap allows to easily show capture streams from a HDMI to USB dongle.
+  To allow the app full access to the resources it needs, please make sure to
+  connect the camera interface with
+
+      sudo snap connect hdmi-usb-dongle:camera
+
+  The app puts a configuration file in place with a bunch of commented out 
+  default values, you can find this file at ~/snap/hdmi-usb-dongle/current/config
+
+grade: stable
+confinement: strict
+compression: lzo
+
+apps:
+  hdmi-usb-dongle:
+    extensions: [gnome-3-38]
+    command: usr/bin/run
+    plugs:
+      - audio-playback
+      - camera
+      - desktop
+      - wayland
+      - x11
+      
+parts:
+  mplayer:
+    plugin: dump
+    source: .
+    organize:
+      run.sh: usr/bin/run
+    stage-packages:
+      - freeglut3
+      - libglu1-mesa
+      - mplayer
+  cleanup:
+    after: [ mplayer ]
+    plugin: nil
+    build-snaps: [ gnome-3-38-2004 ]
+    override-prime: |
+      set -eux
+      cd /snap/gnome-3-38-2004/current
+      find . -type f,l -exec rm -f $SNAPCRAFT_PRIME/{} \;
+      for CRUFT in bug lintian man; do
+        rm -rf $SNAPCRAFT_PRIME/usr/share/$CRUFT
+      done
+      find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
+      find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete

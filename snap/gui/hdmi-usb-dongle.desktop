@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=HDMI to USB Dongle
+Icon=${SNAP}/meta/gui/icon.png
+Exec=hdmi-usb-dongle
+Terminal=false
+Categories=Utility;
