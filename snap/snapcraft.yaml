@@ -28,9 +28,6 @@ apps:
     plugs:
       - audio-playback
       - camera
-      - desktop
-      - wayland
-      - x11
 
 parts:
   mplayer:
