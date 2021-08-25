@@ -6,6 +6,14 @@ HEIGHT="720"
 FPS="30"
 FMT="mjpg"
 
+pid=$$
+
+terminate() {
+  pkill -9 -P "$pid"
+}
+
+trap terminate 1 2 3 9 15 0
+
 # source existing config or ...
 if [ -e "$SNAP_USER_DATA/config" ]; then
 	. $SNAP_USER_DATA/config
@@ -31,6 +39,10 @@ find_device () {
 	}
 
 [ -n "$DEVICE" ] || DEVICE="/dev/$(find_device)"
+
+# make audio work (poor man's loopback monitor with two piped pacat commands)
+AUDIODEV="$(pactl list sources|grep Name|grep MACROSILICON|sed 's/^.*: //')"
+pacat -r --device="$AUDIODEV" --latency-msec=1 | pacat -p --latency-msec=1 &
 
 # run mplayer with options from config file
 $SNAP/usr/bin/mplayer -ao pulse tv:// \

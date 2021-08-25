@@ -27,6 +27,7 @@ apps:
     command: usr/bin/run
     plugs:
       - audio-playback
+      - audio-record
       - camera
 
 parts:
@@ -39,6 +40,7 @@ parts:
       - freeglut3
       - libglu1-mesa
       - mplayer
+      - pulseaudio-utils
   cleanup:
     after: [ mplayer ]
     plugin: nil
