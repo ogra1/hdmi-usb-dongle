@@ -41,8 +41,10 @@ find_device () {
 [ -n "$DEVICE" ] || DEVICE="/dev/$(find_device)"
 
 # make audio work (poor man's loopback monitor with two piped pacat commands)
-AUDIODEV="$(pactl list sources|grep Name|grep MACROSILICON|sed 's/^.*: //')"
-pacat -r --device="$AUDIODEV" --latency-msec=1 | pacat -p --latency-msec=1 &
+if snapctl is-connected audio-record; then
+	AUDIODEV="$(pactl list sources|grep Name|grep MACROSILICON|sed 's/^.*: //')"
+	pacat -r --device="$AUDIODEV" --latency-msec=1 | pacat -p --latency-msec=1 &
+fi
 
 # run mplayer with options from config file
 $SNAP/usr/bin/mplayer -ao pulse tv:// \

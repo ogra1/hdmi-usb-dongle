@@ -9,6 +9,10 @@ description: |
 
       sudo snap connect hdmi-usb-dongle:camera
 
+  To get audio output as well, please make sure to run
+
+      sudo snap connect hdmi-usb-dongle:audio-record
+
   The app puts a configuration file in place with a bunch of commented out 
   default values, you can find this file at ~/snap/hdmi-usb-dongle/current/config
 
