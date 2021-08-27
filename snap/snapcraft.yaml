@@ -33,6 +33,7 @@ apps:
       - audio-playback
       - audio-record
       - camera
+      - hardware-observe
 
 layout:
   /etc/mplayer:
