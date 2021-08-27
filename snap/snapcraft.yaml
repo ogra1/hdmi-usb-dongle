@@ -34,6 +34,10 @@ apps:
       - audio-record
       - camera
 
+layout:
+  /etc/mplayer:
+    bind: $SNAP_DATA/etc/mplayer
+
 parts:
   mplayer:
     plugin: dump

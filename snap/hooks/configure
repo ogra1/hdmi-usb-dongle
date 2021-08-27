@@ -1,0 +1,3 @@
+#! /bin/sh
+
+[ -e /etc/mplayer/mplayer.conf ] || cp -a $SNAP/etc/mplayer/* /etc/mplayer/
