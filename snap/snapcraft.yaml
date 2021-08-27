@@ -5,9 +5,10 @@ summary: Seamlessly show captured video from a HDMI to USB dongle
 description: |
   This snap allows to easily show capture streams from a HDMI to USB dongle.
   To allow the app full access to the resources it needs, please make sure to
-  connect the camera interface with
+  connect the camera interface and allow scanning of the USB bus with
 
       sudo snap connect hdmi-usb-dongle:camera
+      sudo snap connect hdmi-usb-dongle:hardware-observe
 
   To get audio output as well, please make sure to run
 
