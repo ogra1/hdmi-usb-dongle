@@ -40,6 +40,9 @@ find_device () {
 
 [ -n "$DEVICE" ] || DEVICE="/dev/$(find_device)"
 
+# show a fancy tray icon with menu
+PYTHONPATH=$SNAP/lib/python3.8/site-packages:$SNAP/gnome-platform/usr/lib/python3.8/site-packages $SNAP/usr/bin/trayicon &
+
 # make audio work (poor man's loopback monitor with two piped pacat commands)
 if snapctl is-connected audio-record; then
 	AUDIODEV="$(pactl list sources|grep Name|grep MACROSILICON|sed 's/^.*: //')"

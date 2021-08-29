@@ -30,6 +30,8 @@ apps:
   hdmi-usb-dongle:
     extensions: [gnome-3-38]
     command: usr/bin/run
+    environment:
+      TMPDIR: $XDG_RUNTIME_DIR
     plugs:
       - audio-playback
       - audio-record
@@ -41,7 +43,24 @@ layout:
     bind: $SNAP_DATA/etc/mplayer
 
 parts:
+  systray:
+    plugin: python
+    python-packages:
+      - pystray
+    build-environment:
+      - PATH: "$SNAPCRAFT_PART_INSTALL/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/snapcraft/current/bin/scriptlet-bin"
+      - PYTHONPATH: ''
+  trayicon:
+    after: [ systray ]
+    plugin: dump
+    source: trayicon
+    organize:
+      trayicon.py: usr/bin/trayicon
+    stage-packages:
+      - gir1.2-gtk-3.0
+      - gir1.2-appindicator3-0.1
   mplayer:
+    after: [ trayicon ]
     plugin: dump
     source: .
     organize:
