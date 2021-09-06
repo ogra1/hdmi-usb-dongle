@@ -29,23 +29,31 @@ EOF
 fi
 
 find_device () {
-	VENDORS="534d" # add more vendor IDs here
+	VENDORS="534d eba4" # add more vendor IDs here
 	DEV="$(for vendor in $VENDORS; do for file in /sys/bus/usb/devices/*/idVendor; do \
 		if grep -q $vendor $file 2>/dev/null; then \
-			ls $(echo $file| sed 's/idVendor/*/')/video4linux; \
+		  echo -n "$vendor "; ls $(echo $file| sed 's/idVendor/*/')/video4linux; \
 		fi; \
 	done; done | sort | head -1)"
-	echo $DEV
+	echo "$DEV"
 	}
 
-[ -n "$DEVICE" ] || DEVICE="/dev/$(find_device)"
+[ -n "$DEVICE" ] || DEVICE="/dev/$(find_device | cut -d ' ' -f2)"
 
 # show a fancy tray icon with menu
 PYTHONPATH=$SNAP/lib/python3.8/site-packages:$SNAP/gnome-platform/usr/lib/python3.8/site-packages $SNAP/usr/bin/trayicon &
 
 # make audio work (poor man's loopback monitor with two piped pacat commands)
 if snapctl is-connected audio-record; then
-	AUDIODEV="$(pactl list sources|grep Name|grep MACROSILICON|sed 's/^.*: //')"
+	case $(find_device | cut -d ' ' -f1) in
+		534d)
+			MATCH="MACROSILICON"
+			;;
+		eba4)
+			MATCH="Video_Capture_HU123450"
+			;;
+	esac
+	AUDIODEV="$(pactl list sources|grep Name|grep $MATCH|sed 's/^.*: //')"
 	pacat -r --device="$AUDIODEV" --latency-msec=1 | pacat -p --latency-msec=1 &
 fi
 
