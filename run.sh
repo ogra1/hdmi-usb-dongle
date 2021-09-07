@@ -53,7 +53,8 @@ fi
 [ -n "$DEVICE" ] || DEVICE="/dev/${VIDEODEV}"
 
 # show a fancy tray icon with menu
-PYTHONPATH=$SNAP/lib/python3.8/site-packages:$SNAP/gnome-platform/usr/lib/python3.8/site-packages $SNAP/usr/bin/trayicon &
+PYTHONPATH=$SNAP/lib/python3.8/site-packages:$SNAP/gnome-platform/usr/lib/python3.8/site-packages \
+	$SNAP/usr/bin/trayicon $AUDIODEV &
 
 if snapctl is-connected audio-record; then
     # make audio work (poor man's loopback monitor with two piped pacat commands)

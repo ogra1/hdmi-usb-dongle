@@ -3,6 +3,7 @@
 import os
 import pystray
 import subprocess
+import sys
 from PIL import Image
 
 state = False
@@ -12,17 +13,8 @@ def on_clicked(icon, item):
     state = not item.checked
     do_mute(state)
 
-def get_sink():
-    args = ['pactl', 'list', 'sources']
-    p = subprocess.Popen(args, stdout=subprocess.PIPE)
-    output = p.communicate()[0].decode("utf-8")
-    for line in output.split('\n'):
-        if 'Name: ' in line:
-            if 'MACROSILICON' in line:
-                return line.split(':')[1].strip()
-
 def do_mute(state):
-    sink = get_sink()
+    sink = sys.argv[1]
     args = ['pactl', 'set-source-mute', sink, str(state)]
     p = subprocess.Popen(args)
 
