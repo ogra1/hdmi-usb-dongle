@@ -58,13 +58,13 @@ PYTHONPATH=$SNAP/lib/python3.8/site-packages:$SNAP/gnome-platform/usr/lib/python
 
 if snapctl is-connected audio-record; then
     # make audio work (poor man's loopback monitor with two piped pacat commands)
-	if [ -n "$AUDIODEV" ]; then
-	  pacat -r --device="$AUDIODEV" --latency-msec=1 | pacat -p --latency-msec=1 &
-	else
+    if [ -n "$AUDIODEV" ]; then
+      pacat -r --device="$AUDIODEV" --latency-msec=1 | pacat -p --latency-msec=1 &
+    else
       echo "No matching audio device found, moving on without sound !!"
     fi
 else
-	echo "Please connect the audio-record snap plug to get audio support"
+    echo "Please connect the audio-record snap plug to get audio support"
 fi
 
 if snapctl is-connected camera; then
