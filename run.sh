@@ -28,7 +28,7 @@ else
 EOF
 fi
 
-VENDORS="534d eba4" # add more vendor IDs here
+VENDORS="534d eba4 3188" # add more vendor IDs here
 
 if snapctl is-connected hardware-observe; then
   # find audio and video devices by vendor id
